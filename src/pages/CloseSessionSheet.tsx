@@ -9,7 +9,6 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { mutate } from "@/lib/request";
@@ -29,6 +28,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+
+import { useTranslation } from "@/hooks/useTranslation";
 
 import { CounterData, SessionData } from "@/types/cashSession";
 import cashSessionApi from "@/types/cashSessionApi";

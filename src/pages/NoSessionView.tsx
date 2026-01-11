@@ -1,9 +1,10 @@
 import { Banknote, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+
+import { useTranslation } from "@/hooks/useTranslation";
 
 import CounterSelectorSheet from "@/pages/CounterSelectorSheet";
 import { CounterData } from "@/types/cashSession";

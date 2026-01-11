@@ -11,7 +11,6 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { mutate } from "@/lib/request";
@@ -37,6 +36,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { useTranslation } from "@/hooks/useTranslation";
 
 import { authUserAtom } from "@/state/user-atom";
 import { SessionData } from "@/types/cashSession";

@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CheckIcon, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -27,6 +26,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+
+import { useTranslation } from "@/hooks/useTranslation";
 
 import { CounterData } from "@/types/cashSession";
 import cashSessionApi from "@/types/cashSessionApi";

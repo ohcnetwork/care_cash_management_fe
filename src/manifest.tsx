@@ -6,7 +6,7 @@ const manifest = {
   extends: [],
   components: {},
   devices: [],
-  navItems: [
+  billingNavItems: [
     {
       name: "Cash Management",
       url: "/billing/cash",

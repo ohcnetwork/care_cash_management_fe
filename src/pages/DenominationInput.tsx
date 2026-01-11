@@ -1,7 +1,7 @@
-import { useTranslation } from "react-i18next";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Common denominations in descending order
 const DENOMINATIONS = [500, 200, 100, 50, 20, 10, 5, 2, 1];

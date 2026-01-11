@@ -4,7 +4,6 @@ import { useAtomValue } from "jotai/react";
 import { ArrowLeftRight, Info, Loader } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -32,6 +31,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Switch } from "@/components/ui/switch";
+
+import { useTranslation } from "@/hooks/useTranslation";
 
 import { authUserAtom } from "@/state/user-atom";
 import { CounterData, SessionData } from "@/types/cashSession";

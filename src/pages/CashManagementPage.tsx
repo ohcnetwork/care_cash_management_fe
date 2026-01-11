@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai/react";
-import { useTranslation } from "react-i18next";
 
 import { query } from "@/lib/request";
 
 import Page from "@/components/common/Page";
+
+import { useTranslation } from "@/hooks/useTranslation";
 
 import ActiveSessionCard from "@/pages/ActiveSessionCard";
 import NoSessionView from "@/pages/NoSessionView";

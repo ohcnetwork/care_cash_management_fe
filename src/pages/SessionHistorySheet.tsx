@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { History } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { query } from "@/lib/request";
 
@@ -15,6 +14,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+
+import { useTranslation } from "@/hooks/useTranslation";
 
 import { SessionData } from "@/types/cashSession";
 import cashSessionApi from "@/types/cashSessionApi";
