@@ -92,8 +92,6 @@ export default function CounterSelectorSheet({
     });
   };
 
-  console.log("isValid", form.formState.isValid);
-
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="sm:max-w-md">
