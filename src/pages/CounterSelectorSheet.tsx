@@ -34,7 +34,9 @@ import cashSessionApi from "@/types/cashSessionApi";
 
 const formSchema = z.object({
   counter_x_care_id: z.string().min(1, "Please select a counter"),
-  opening_balance: z.number().min(0, "Opening balance must be 0 or more"),
+  opening_balance: z.coerce
+    .number()
+    .min(0, "Opening balance must be 0 or more"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -89,6 +91,8 @@ export default function CounterSelectorSheet({
       opening_balance: values.opening_balance,
     });
   };
+
+  console.log("isValid", form.formState.isValid);
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>

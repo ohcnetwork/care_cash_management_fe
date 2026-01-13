@@ -43,7 +43,7 @@ import DenominationInput from "./DenominationInput";
 
 const formSchema = z.object({
   to_session_id: z.number().positive("Please select a destination"),
-  amount: z.number().positive("Amount must be greater than 0"),
+  amount: z.coerce.number().positive("Amount must be greater than 0"),
   use_denominations: z.boolean(),
 });
 
