@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue } from "jotai/react";
 import { ArrowLeftRight, Info, Loader } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -34,7 +33,7 @@ import { Switch } from "@/components/ui/switch";
 
 import { useTranslation } from "@/hooks/useTranslation";
 
-import { authUserAtom } from "@/state/user-atom";
+import useAuthUser from "@/state/use-Auth";
 import { CounterData, SessionData } from "@/types/cashSession";
 import cashSessionApi from "@/types/cashSessionApi";
 import cashTransferApi from "@/types/cashTransferApi";
@@ -64,7 +63,7 @@ export default function CreateTransferSheet({
 }: CreateTransferSheetProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const user = useAtomValue(authUserAtom);
+  const user = useAuthUser();
   const [denominations, setDenominations] = useState<Record<string, number>>(
     {},
   );
