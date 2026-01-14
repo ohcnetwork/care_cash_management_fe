@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAtomValue } from "jotai/react";
 import {
   ArrowRight,
   Check,
@@ -39,7 +38,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useTranslation } from "@/hooks/useTranslation";
 
-import { authUserAtom } from "@/state/user-atom";
+import useAuthUser from "@/state/use-Auth";
 import { SessionData } from "@/types/cashSession";
 import { TransferData, TransferStatus } from "@/types/cashTransfer";
 import cashTransferApi from "@/types/cashTransferApi";
@@ -55,7 +54,7 @@ export default function PendingTransfersCard({
 }: PendingTransfersCardProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const user = useAtomValue(authUserAtom);
+  const user = useAuthUser();
 
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [selectedTransfer, setSelectedTransfer] = useState<TransferData | null>(
@@ -375,14 +374,14 @@ export default function PendingTransfersCard({
                   className="data-[state=active]:bg-white rounded-md px-4 font-semibold"
                 >
                   <Upload className="mr-1.5 size-4" />
-                  {t("sent")} ({sentTransfers.length})
+                  {t("sent")}
                 </TabsTrigger>
                 <TabsTrigger
                   value="received"
                   className="data-[state=active]:bg-white rounded-md px-4 font-semibold"
                 >
                   <Download className="mr-1.5 size-4" />
-                  {t("received")} ({receivedTransfers.length})
+                  {t("received")}
                 </TabsTrigger>
               </TabsList>
 

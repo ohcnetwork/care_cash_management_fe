@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAtomValue } from "jotai/react";
 
 import { query } from "@/lib/request";
 
@@ -11,7 +10,7 @@ import ActiveSessionCard from "@/pages/ActiveSessionCard";
 import NoSessionView from "@/pages/NoSessionView";
 import PendingTransfersCard from "@/pages/PendingTransfersCard";
 import SessionHistorySheet from "@/pages/SessionHistorySheet";
-import { authUserAtom } from "@/state/user-atom";
+import useAuthUser from "@/state/use-Auth";
 import { SessionData } from "@/types/cashSession";
 import cashSessionApi from "@/types/cashSessionApi";
 
@@ -23,7 +22,7 @@ export default function CashManagementPage({
   facilityId,
 }: CashManagementPageProps) {
   const { t } = useTranslation();
-  const user = useAtomValue(authUserAtom);
+  const user = useAuthUser();
 
   // Get counters to check for active session
   const { data: countersResponse, isLoading: isLoadingCounters } = useQuery({
@@ -32,6 +31,7 @@ export default function CashManagementPage({
       pathParams: { facilityId: facilityId },
     }),
   });
+  console.log("userid", user?.id);
 
   // Find counter where current user has an active session
   const userCounter = countersResponse?.counters?.find((counter) =>
@@ -42,6 +42,7 @@ export default function CashManagementPage({
 
   // Get current session if user has one - only fetch when we have a valid counter
   const counterXCareId = userCounter?.x_care_id;
+
   const { data: sessionResponse, isLoading: isLoadingSession } = useQuery({
     queryKey: ["cash-session-current", facilityId, counterXCareId],
     queryFn: query(cashSessionApi.getCurrentSession, {
