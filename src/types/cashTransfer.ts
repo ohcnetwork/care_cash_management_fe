@@ -25,7 +25,7 @@ export interface TransferData {
 export interface CreateTransferRequest {
   from_counter_x_care_id: string;
   to_session_id: string;
-  amount: number;
+  amount: string;
   denominations?: Record<string, number>;
 }
 

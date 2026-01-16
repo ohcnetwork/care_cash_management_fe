@@ -6,7 +6,12 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { toNumber, zodDecimal } from "@/lib/decimal";
+import {
+  isGreaterThan,
+  isLessThanOrEqual,
+  roundForApi,
+  zodDecimal,
+} from "@/lib/decimal";
 import { mutate } from "@/lib/request";
 import { query } from "@/lib/request";
 
@@ -88,7 +93,7 @@ export default function CreateTransferSheet({
   });
 
   const useDenominations = form.watch("use_denominations");
-  const amount = form.watch("amount");
+  const amount = roundForApi(form.watch("amount"));
   const selectedSessionId = form.watch("to_session_id");
 
   // Find the selected counter to check if it's main cash
@@ -129,7 +134,7 @@ export default function CreateTransferSheet({
     createTransfer({
       from_counter_x_care_id: session.counter_x_care_id,
       to_session_id: String(values.to_session_id),
-      amount: toNumber(values.amount),
+      amount: roundForApi(values.amount),
       denominations:
         values.use_denominations || isMainCashTransfer
           ? denominations
@@ -158,7 +163,7 @@ export default function CreateTransferSheet({
         (sum, [denom, count]) => sum + parseInt(denom) * count,
         0,
       );
-      form.setValue("amount", String(total), { shouldValidate: true });
+      form.setValue("amount", roundForApi(total), { shouldValidate: true });
     }
   };
 
@@ -206,7 +211,7 @@ export default function CreateTransferSheet({
                     {availableDestinations.length > 0 ? (
                       <RadioGroup
                         onValueChange={(value) =>
-                          field.onChange(toNumber(value))
+                          field.onChange(roundForApi(value))
                         }
                         value={String(field.value)}
                       >
@@ -310,7 +315,9 @@ export default function CreateTransferSheet({
                               max={session.expected_amount}
                               {...field}
                               onChange={(e) =>
-                                field.onChange(e.target.value || "0")
+                                field.onChange(
+                                  roundForApi(e.target.value) || "0",
+                                )
                               }
                               className="pl-8"
                             />
@@ -323,7 +330,7 @@ export default function CreateTransferSheet({
                 )}
 
                 {/* Validation warning */}
-                {toNumber(amount) > session.expected_amount && (
+                {isGreaterThan(amount, session.expected_amount) && (
                   <p className="text-sm text-red-500">
                     {t("transfer_exceeds_balance")}
                   </p>
@@ -342,8 +349,8 @@ export default function CreateTransferSheet({
                     disabled={
                       isPending ||
                       !form.formState.isValid ||
-                      toNumber(amount) > session.expected_amount ||
-                      toNumber(amount) <= 0
+                      isGreaterThan(amount, session.expected_amount) ||
+                      isLessThanOrEqual(amount, "0")
                     }
                   >
                     {isPending ? (

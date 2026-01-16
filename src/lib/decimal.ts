@@ -1,12 +1,10 @@
 import Decimal from "decimal.js";
 import z from "zod";
 
-const careConfig = window.__CORE_ENV__ as {
-  careConfig: {
-    decimal: {
-      internalPrecision: number;
-      accountingPrecision: number;
-    };
+export const careConfig = window.__CORE_ENV__ as {
+  decimal: {
+    internalPrecision: number;
+    accountingPrecision: number;
   };
 };
 
@@ -55,15 +53,11 @@ export function divide(
 }
 
 export function roundForDisplay(value: string | number | Decimal): string {
-  return new Decimal(value).toFixed(
-    careConfig.careConfig.decimal.accountingPrecision,
-  );
+  return new Decimal(value).toFixed(careConfig.decimal.accountingPrecision);
 }
 
 export function roundForApi(value: string | number | Decimal): string {
-  return new Decimal(value).toFixed(
-    careConfig.careConfig.decimal.internalPrecision,
-  );
+  return new Decimal(value).toFixed(careConfig.decimal.internalPrecision);
 }
 
 /**
