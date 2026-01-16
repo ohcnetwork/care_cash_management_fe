@@ -1,5 +1,3 @@
-import { toNumber } from "@/lib/decimal";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -36,7 +34,7 @@ export default function DenominationInput({
 
   const calculateTotal = () => {
     return Object.entries(value).reduce((sum, [denom, count]) => {
-      return sum + parseInt(denom) * toNumber(count);
+      return sum + parseInt(denom) * count;
     }, 0);
   };
 
