@@ -169,7 +169,7 @@ export default function CounterSelectorSheet({
                         min="0"
                         {...field}
                         className="pl-8"
-                        placeholder="0"
+                        placeholder="0.00"
                       />
                     </div>
                   </FormControl>

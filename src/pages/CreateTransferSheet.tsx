@@ -96,7 +96,7 @@ export default function CreateTransferSheet({
   });
 
   const useDenominations = form.watch("use_denominations");
-  const amount = round(form.watch("amount"));
+  const amount = form.watch("amount");
   const selectedSessionId = form.watch("to_session_id");
 
   // Find the selected counter to check if it's main cash
