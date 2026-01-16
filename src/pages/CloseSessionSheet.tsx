@@ -198,8 +198,8 @@ export default function CloseSessionSheet({
                 <AlertTitle>{t("balance_liability_warning_title")}</AlertTitle>
                 <AlertDescription>
                   {t("balance_liability_warning_description", {
-                    amount: (
-                      <MonetaryDisplay amount={session.expected_amount} />
+                    amount: numberFormatter.format(
+                      toNumber(session.expected_amount),
                     ),
                   })}
                 </AlertDescription>
