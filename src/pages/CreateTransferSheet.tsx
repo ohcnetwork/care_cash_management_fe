@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { zodDecimal } from "@/lib/decimal";
 import { mutate } from "@/lib/request";
 import { query } from "@/lib/request";
 
@@ -42,7 +43,7 @@ import DenominationInput from "./DenominationInput";
 
 const formSchema = z.object({
   to_session_id: z.number().positive("Please select a destination"),
-  amount: z.coerce.number().positive("Amount must be greater than 0"),
+  amount: zodDecimal({ min: 0 }),
   use_denominations: z.boolean(),
 });
 
@@ -81,7 +82,7 @@ export default function CreateTransferSheet({
     resolver: zodResolver(formSchema),
     defaultValues: {
       to_session_id: 0,
-      amount: 0,
+      amount: "0",
       use_denominations: false,
     },
   });
@@ -128,7 +129,7 @@ export default function CreateTransferSheet({
     createTransfer({
       from_counter_x_care_id: session.counter_x_care_id,
       to_session_id: String(values.to_session_id),
-      amount: values.amount,
+      amount: Number(values.amount),
       denominations:
         values.use_denominations || isMainCashTransfer
           ? denominations
@@ -157,7 +158,7 @@ export default function CreateTransferSheet({
         (sum, [denom, count]) => sum + parseInt(denom) * count,
         0,
       );
-      form.setValue("amount", total, { shouldValidate: true });
+      form.setValue("amount", String(total), { shouldValidate: true });
     }
   };
 
@@ -307,7 +308,7 @@ export default function CreateTransferSheet({
                               max={session.expected_amount}
                               {...field}
                               onChange={(e) =>
-                                field.onChange(parseFloat(e.target.value) || 0)
+                                field.onChange(e.target.value || "0")
                               }
                               className="pl-8"
                             />
@@ -320,7 +321,7 @@ export default function CreateTransferSheet({
                 )}
 
                 {/* Validation warning */}
-                {amount > session.expected_amount && (
+                {Number(amount) > session.expected_amount && (
                   <p className="text-sm text-red-500">
                     {t("transfer_exceeds_balance")}
                   </p>
@@ -339,8 +340,8 @@ export default function CreateTransferSheet({
                     disabled={
                       isPending ||
                       !form.formState.isValid ||
-                      amount > session.expected_amount ||
-                      amount <= 0
+                      Number(amount) > session.expected_amount ||
+                      Number(amount) <= 0
                     }
                   >
                     {isPending ? (

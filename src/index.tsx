@@ -9,6 +9,14 @@ declare global {
   interface Window {
     CARE_API_URL: string;
     AuthUserContext: React.Context<AuthContextType>;
+    __CORE_ENV__: {
+      careConfig: {
+        decimal: {
+          internalPrecision: number;
+          accountingPrecision: number;
+        };
+      };
+    };
   }
 }
 
