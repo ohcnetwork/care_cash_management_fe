@@ -7,10 +7,11 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import {
+  add,
   isGreaterThan,
   isPositive,
+  multiply,
   round,
-  toNumber,
   zodDecimal,
 } from "@/lib/decimal";
 import { mutate } from "@/lib/request";
@@ -161,9 +162,10 @@ export default function CreateTransferSheet({
   ) => {
     setDenominations(newDenominations);
     if (useDenominations || isMainCashTransfer) {
-      const total = Object.entries(newDenominations).reduce(
-        (sum, [denom, count]) => sum + parseInt(denom) * toNumber(count),
-        0,
+      const total = add(
+        ...Object.entries(newDenominations).map(([denom, count]) =>
+          multiply(denom, count),
+        ),
       );
       form.setValue("amount", round(total), { shouldValidate: true });
     }
