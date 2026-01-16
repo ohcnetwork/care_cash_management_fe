@@ -1,3 +1,5 @@
+import { roundForDisplay } from "@/lib/decimal";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -68,7 +70,7 @@ export default function DenominationInput({
           <span className="text-sm text-gray-500">{t("total")}: </span>
           <span className="text-lg font-semibold">
             {t("currency_symbol")}
-            {calculateTotal().toLocaleString()}
+            {roundForDisplay(calculateTotal())}
           </span>
         </div>
       </div>

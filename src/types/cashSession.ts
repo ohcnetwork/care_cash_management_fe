@@ -42,7 +42,7 @@ export interface CounterData {
 // Request to open a new session
 export interface OpenSessionRequest {
   counter_x_care_id: string;
-  opening_balance?: number;
+  opening_balance?: string;
 }
 
 // Request to close a session
