@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { zodDecimal } from "@/lib/decimal";
+import { toNumber, zodDecimal } from "@/lib/decimal";
 import { mutate } from "@/lib/request";
 
 import { Badge } from "@/components/ui/badge";
@@ -87,7 +87,7 @@ export default function CounterSelectorSheet({
   const onSubmit = (values: FormValues) => {
     openSession({
       counter_x_care_id: values.counter_x_care_id,
-      opening_balance: Number(values.opening_balance),
+      opening_balance: toNumber(values.opening_balance),
     });
   };
 

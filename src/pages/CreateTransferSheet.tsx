@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { zodDecimal } from "@/lib/decimal";
+import { toNumber, zodDecimal } from "@/lib/decimal";
 import { mutate } from "@/lib/request";
 import { query } from "@/lib/request";
 
@@ -129,7 +129,7 @@ export default function CreateTransferSheet({
     createTransfer({
       from_counter_x_care_id: session.counter_x_care_id,
       to_session_id: String(values.to_session_id),
-      amount: Number(values.amount),
+      amount: toNumber(values.amount),
       denominations:
         values.use_denominations || isMainCashTransfer
           ? denominations
@@ -205,7 +205,9 @@ export default function CreateTransferSheet({
                   <FormControl>
                     {availableDestinations.length > 0 ? (
                       <RadioGroup
-                        onValueChange={(value) => field.onChange(Number(value))}
+                        onValueChange={(value) =>
+                          field.onChange(toNumber(value))
+                        }
                         value={String(field.value)}
                       >
                         {availableDestinations.map((counter: CounterData) =>
@@ -321,7 +323,7 @@ export default function CreateTransferSheet({
                 )}
 
                 {/* Validation warning */}
-                {Number(amount) > session.expected_amount && (
+                {toNumber(amount) > session.expected_amount && (
                   <p className="text-sm text-red-500">
                     {t("transfer_exceeds_balance")}
                   </p>
@@ -340,8 +342,8 @@ export default function CreateTransferSheet({
                     disabled={
                       isPending ||
                       !form.formState.isValid ||
-                      Number(amount) > session.expected_amount ||
-                      Number(amount) <= 0
+                      toNumber(amount) > session.expected_amount ||
+                      toNumber(amount) <= 0
                     }
                   >
                     {isPending ? (
