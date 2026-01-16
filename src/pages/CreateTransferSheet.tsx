@@ -71,7 +71,7 @@ export default function CreateTransferSheet({
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const user = useAuthUser();
-  const [denominations, setDenominations] = useState<Record<string, string>>(
+  const [denominations, setDenominations] = useState<Record<string, number>>(
     {},
   );
 
@@ -156,7 +156,7 @@ export default function CreateTransferSheet({
 
   // Handle denomination change
   const handleDenominationChange = (
-    newDenominations: Record<string, string>,
+    newDenominations: Record<string, number>,
   ) => {
     setDenominations(newDenominations);
     if (useDenominations || isMainCashTransfer) {

@@ -1,4 +1,4 @@
-import { round, toNumber } from "@/lib/decimal";
+import { toNumber } from "@/lib/decimal";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,8 +9,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 const DENOMINATIONS = [500, 200, 100, 50, 20, 10, 5, 2, 1];
 
 interface DenominationInputProps {
-  value: Record<string, string>;
-  onChange: (value: Record<string, string>) => void;
+  value: Record<string, number>;
+  onChange: (value: Record<string, number>) => void;
   disabled?: boolean;
 }
 
@@ -26,7 +26,7 @@ export default function DenominationInput({
     const newValue = { ...value };
 
     if (numCount > 0) {
-      newValue[denom.toString()] = round(numCount);
+      newValue[denom.toString()] = numCount;
     } else {
       delete newValue[denom.toString()];
     }

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { History } from "lucide-react";
 import { useState } from "react";
 
+import { toNumber } from "@/lib/decimal";
 import { query } from "@/lib/request";
 
 import { Badge } from "@/components/ui/badge";
@@ -56,13 +57,14 @@ export default function SessionHistorySheet({
     });
   };
 
-  const formatCurrency = (amount: number | null) => {
+  const formatCurrency = (amount: string | null) => {
     if (amount === null) return "-";
+    const amountNumber = toNumber(amount);
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
       minimumFractionDigits: 2,
-    }).format(amount);
+    }).format(amountNumber);
   };
 
   const getDifferenceColor = (difference: number | null) => {
@@ -142,9 +144,9 @@ export default function SessionHistorySheet({
                       <div className="rounded bg-gray-50 p-2">
                         <p className="text-gray-500">{t("difference")}</p>
                         <p
-                          className={`font-medium ${getDifferenceColor(session.closing_difference)}`}
+                          className={`font-medium ${getDifferenceColor(toNumber(session.closing_difference))}`}
                         >
-                          {session.closing_difference > 0 ? "+" : ""}
+                          {toNumber(session.closing_difference) > 0 ? "+" : ""}
                           {formatCurrency(session.closing_difference)}
                         </p>
                       </div>
