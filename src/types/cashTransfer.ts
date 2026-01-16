@@ -26,7 +26,7 @@ export interface CreateTransferRequest {
   from_counter_x_care_id: string;
   to_session_id: string;
   amount: string;
-  denominations?: Record<string, number>;
+  denominations?: Record<string, string>;
 }
 
 // Request to accept a transfer

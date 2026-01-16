@@ -1,4 +1,4 @@
-import { roundForDisplay } from "@/lib/decimal";
+import { roundForDisplay, toNumber } from "@/lib/decimal";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,8 +9,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 const DENOMINATIONS = [500, 200, 100, 50, 20, 10, 5, 2, 1];
 
 interface DenominationInputProps {
-  value: Record<string, number>;
-  onChange: (value: Record<string, number>) => void;
+  value: Record<string, string>;
+  onChange: (value: Record<string, string>) => void;
   disabled?: boolean;
 }
 
@@ -26,7 +26,7 @@ export default function DenominationInput({
     const newValue = { ...value };
 
     if (numCount > 0) {
-      newValue[denom.toString()] = numCount;
+      newValue[denom.toString()] = roundForDisplay(numCount);
     } else {
       delete newValue[denom.toString()];
     }
@@ -36,7 +36,7 @@ export default function DenominationInput({
 
   const calculateTotal = () => {
     return Object.entries(value).reduce((sum, [denom, count]) => {
-      return sum + parseInt(denom) * count;
+      return sum + parseInt(denom) * toNumber(count);
     }, 0);
   };
 
@@ -70,7 +70,7 @@ export default function DenominationInput({
           <span className="text-sm text-gray-500">{t("total")}: </span>
           <span className="text-lg font-semibold">
             {t("currency_symbol")}
-            {roundForDisplay(calculateTotal())}
+            {calculateTotal()}
           </span>
         </div>
       </div>
