@@ -47,12 +47,8 @@ export function divide(
   return new Decimal(a).dividedBy(b);
 }
 
-export function roundForDisplay(value: string | number | Decimal): string {
+export function round(value: string | number | Decimal): string {
   return new Decimal(value).toFixed(careConfig.decimal.accountingPrecision);
-}
-
-export function roundForApi(value: string | number | Decimal): string {
-  return new Decimal(value).toFixed(careConfig.decimal.internalPrecision);
 }
 
 /**
@@ -170,4 +166,4 @@ export const zodDecimal = (options?: {
     .refine((val) => options?.max === undefined || Number(val) <= options.max, {
       message: `Must be at most ${options?.max}`,
     })
-    .transform((val) => roundForApi(val));
+    .transform(round);

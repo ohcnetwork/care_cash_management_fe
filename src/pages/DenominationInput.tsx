@@ -1,4 +1,4 @@
-import { roundForDisplay, toNumber } from "@/lib/decimal";
+import { round, toNumber } from "@/lib/decimal";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,7 +26,7 @@ export default function DenominationInput({
     const newValue = { ...value };
 
     if (numCount > 0) {
-      newValue[denom.toString()] = roundForDisplay(numCount);
+      newValue[denom.toString()] = round(numCount);
     } else {
       delete newValue[denom.toString()];
     }

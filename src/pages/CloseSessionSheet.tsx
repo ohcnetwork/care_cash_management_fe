@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { isPositive, toNumber } from "@/lib/decimal";
 import { mutate } from "@/lib/request";
 import { query } from "@/lib/request";
 
@@ -59,7 +60,7 @@ export default function CloseSessionSheet({
   const [selectedAction, setSelectedAction] =
     useState<CloseAction>("transfer_all");
 
-  const hasBalance = session.expected_amount > 0;
+  const hasBalance = isPositive(session.expected_amount);
   const hasPendingOutgoing = session.pending_outgoing_count > 0;
   const hasPendingIncoming = session.pending_incoming_count > 0;
   const hasPendingTransfers = hasPendingOutgoing || hasPendingIncoming;
@@ -115,12 +116,13 @@ export default function CloseSessionSheet({
     onTransferClick?.();
   };
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = (amount: string) => {
+    const amountNumber = toNumber(amount);
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
       minimumFractionDigits: 2,
-    }).format(amount);
+    }).format(amountNumber);
   };
 
   const canClose =

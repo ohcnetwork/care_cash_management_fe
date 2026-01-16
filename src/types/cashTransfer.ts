@@ -5,7 +5,7 @@ export type TransferStatus = "pending" | "accepted" | "rejected" | "cancelled";
 export interface TransferData {
   id: number;
   status: TransferStatus;
-  amount: number;
+  amount: string;
   from_user_id: string | null;
   from_user_name: string | null;
   from_counter_id: string | null;

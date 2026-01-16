@@ -9,7 +9,7 @@ import { z } from "zod";
 import {
   isGreaterThan,
   isPositive,
-  roundForApi,
+  round,
   toNumber,
   zodDecimal,
 } from "@/lib/decimal";
@@ -94,7 +94,7 @@ export default function CreateTransferSheet({
   });
 
   const useDenominations = form.watch("use_denominations");
-  const amount = roundForApi(form.watch("amount"));
+  const amount = round(form.watch("amount"));
   const selectedSessionId = form.watch("to_session_id");
 
   // Find the selected counter to check if it's main cash
@@ -135,7 +135,7 @@ export default function CreateTransferSheet({
     createTransfer({
       from_counter_x_care_id: session.counter_x_care_id,
       to_session_id: String(values.to_session_id),
-      amount: roundForApi(values.amount),
+      amount: round(values.amount),
       denominations:
         values.use_denominations || isMainCashTransfer
           ? denominations
@@ -164,16 +164,17 @@ export default function CreateTransferSheet({
         (sum, [denom, count]) => sum + parseInt(denom) * toNumber(count),
         0,
       );
-      form.setValue("amount", roundForApi(total), { shouldValidate: true });
+      form.setValue("amount", round(total), { shouldValidate: true });
     }
   };
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = (amount: string) => {
+    const amountNumber = toNumber(amount);
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
       minimumFractionDigits: 2,
-    }).format(amount);
+    }).format(amountNumber);
   };
 
   return (

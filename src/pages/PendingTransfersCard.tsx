@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { toNumber } from "@/lib/decimal";
 import { mutate } from "@/lib/request";
 import { query } from "@/lib/request";
 
@@ -204,12 +205,13 @@ export default function PendingTransfersCard({
     });
   };
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = (amount: string) => {
+    const amountNumber = toNumber(amount);
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
       minimumFractionDigits: 2,
-    }).format(amount);
+    }).format(amountNumber);
   };
 
   const getStatusBadge = (status: TransferStatus) => {
