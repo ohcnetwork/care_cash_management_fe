@@ -19,3 +19,5 @@ declare global {
 }
 
 export const CARE_API_URL = window.CARE_API_URL;
+
+export const careConfig = window.__CORE_ENV__;

@@ -27,6 +27,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { MonetaryDisplay } from "@/components/ui/monetary-display";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Sheet,
@@ -168,15 +169,6 @@ export default function CreateTransferSheet({
     }
   };
 
-  const formatCurrency = (amount: string) => {
-    const amountNumber = toNumber(amount);
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 2,
-    }).format(amountNumber);
-  };
-
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="sm:max-w-lg overflow-y-auto">
@@ -196,7 +188,7 @@ export default function CreateTransferSheet({
                 {t("your_current_balance")}
               </p>
               <p className="text-2xl font-bold text-gray-900">
-                {formatCurrency(session.expected_amount)}
+                <MonetaryDisplay amount={session.expected_amount} />
               </p>
             </div>
 

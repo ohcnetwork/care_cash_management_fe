@@ -1,7 +1,12 @@
 import Decimal from "decimal.js";
 import z from "zod";
 
-const careConfig = window.__CORE_ENV__;
+import { careConfig } from "@/index";
+
+/**
+ * Accounting display precision (matches backend ACCOUNTING_PRECISION)
+ */
+export const ACCOUNTING_PRECISION = careConfig.decimal.accountingPrecision;
 
 /**
  * Create a Decimal from a string value (API response format)
