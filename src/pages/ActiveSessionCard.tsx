@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { MonetaryDisplay } from "@/components/ui/monetary-display";
 
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -41,14 +42,6 @@ export default function ActiveSessionCard({
     });
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 2,
-    }).format(amount);
-  };
-
   return (
     <>
       <Card className="border-green-200 bg-green-50/50">
@@ -70,13 +63,13 @@ export default function ActiveSessionCard({
             <div className="rounded-lg bg-white p-3 shadow-sm">
               <p className="text-sm text-gray-500">{t("opening_balance")}</p>
               <p className="text-lg font-semibold text-gray-900">
-                {formatCurrency(session.opening_balance)}
+                <MonetaryDisplay amount={session.opening_balance} />
               </p>
             </div>
             <div className="rounded-lg bg-white p-3 shadow-sm">
               <p className="text-sm text-gray-500">{t("current_balance")}</p>
               <p className="text-lg font-semibold text-green-600">
-                {formatCurrency(session.expected_amount)}
+                <MonetaryDisplay amount={session.expected_amount} />
               </p>
             </div>
             <div className="rounded-lg bg-white p-3 shadow-sm">

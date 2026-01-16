@@ -1,5 +1,8 @@
+import { add, multiply } from "@/lib/decimal";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { MonetaryDisplay } from "@/components/ui/monetary-display";
 
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -32,12 +35,6 @@ export default function DenominationInput({
     onChange(newValue);
   };
 
-  const calculateTotal = () => {
-    return Object.entries(value).reduce((sum, [denom, count]) => {
-      return sum + parseInt(denom) * count;
-    }, 0);
-  };
-
   return (
     <div className="space-y-4">
       <Label className="text-base font-medium">
@@ -68,7 +65,12 @@ export default function DenominationInput({
           <span className="text-sm text-gray-500">{t("total")}: </span>
           <span className="text-lg font-semibold">
             {t("currency_symbol")}
-            {calculateTotal().toLocaleString()}
+            <MonetaryDisplay
+              amount={add(
+                ...Object.entries(value).map((factors) => multiply(...factors)),
+              )}
+              hideCurrency
+            />
           </span>
         </div>
       </div>

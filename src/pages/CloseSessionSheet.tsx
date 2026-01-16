@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { isPositive, toNumber } from "@/lib/decimal";
 import { mutate } from "@/lib/request";
 import { query } from "@/lib/request";
 
@@ -19,6 +20,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import {
+  MonetaryDisplay,
+  numberFormatter,
+} from "@/components/ui/monetary-display";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Sheet,
@@ -59,7 +64,7 @@ export default function CloseSessionSheet({
   const [selectedAction, setSelectedAction] =
     useState<CloseAction>("transfer_all");
 
-  const hasBalance = session.expected_amount > 0;
+  const hasBalance = isPositive(session.expected_amount);
   const hasPendingOutgoing = session.pending_outgoing_count > 0;
   const hasPendingIncoming = session.pending_incoming_count > 0;
   const hasPendingTransfers = hasPendingOutgoing || hasPendingIncoming;
@@ -115,14 +120,6 @@ export default function CloseSessionSheet({
     onTransferClick?.();
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 2,
-    }).format(amount);
-  };
-
   const canClose =
     !hasBalance ||
     (selectedAction === "close_with_balance" && acknowledgedLiability);
@@ -155,7 +152,7 @@ export default function CloseSessionSheet({
                 hasBalance ? "text-amber-700" : "text-green-700"
               }`}
             >
-              {formatCurrency(session.expected_amount)}
+              <MonetaryDisplay amount={session.expected_amount} />
             </p>
             {!hasBalance && (
               <p className="text-sm text-green-600 mt-1 flex items-center gap-1">
@@ -201,7 +198,9 @@ export default function CloseSessionSheet({
                 <AlertTitle>{t("balance_liability_warning_title")}</AlertTitle>
                 <AlertDescription>
                   {t("balance_liability_warning_description", {
-                    amount: formatCurrency(session.expected_amount),
+                    amount: numberFormatter.format(
+                      toNumber(session.expected_amount),
+                    ),
                   })}
                 </AlertDescription>
               </Alert>
@@ -323,7 +322,9 @@ export default function CloseSessionSheet({
                       className="text-sm text-red-800 cursor-pointer leading-relaxed"
                     >
                       {t("acknowledge_liability_checkbox", {
-                        amount: formatCurrency(session.expected_amount),
+                        amount: numberFormatter.format(
+                          toNumber(session.expected_amount),
+                        ),
                       })}
                     </Label>
                   </div>
@@ -354,7 +355,7 @@ export default function CloseSessionSheet({
               <div>
                 <span className="text-gray-500">{t("opening_balance")}</span>
                 <p className="font-medium">
-                  {formatCurrency(session.opening_balance)}
+                  <MonetaryDisplay amount={session.opening_balance} />
                 </p>
               </div>
               <div>
@@ -366,7 +367,7 @@ export default function CloseSessionSheet({
                 <p
                   className={`font-medium ${hasBalance ? "text-amber-600" : "text-green-600"}`}
                 >
-                  {formatCurrency(session.expected_amount)}
+                  <MonetaryDisplay amount={session.expected_amount} />
                 </p>
               </div>
             </div>

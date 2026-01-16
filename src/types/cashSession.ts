@@ -5,8 +5,8 @@ export type SessionStatus = "open" | "closed";
 export interface SessionData {
   id: number;
   status: SessionStatus;
-  opening_balance: number;
-  expected_amount: number;
+  opening_balance: string;
+  expected_amount: string;
   counter_id: number;
   counter_x_care_id: string;
   external_user_id: string;
@@ -14,9 +14,9 @@ export interface SessionData {
   counter_name: string;
   opened_at: string;
   closed_at: string | null;
-  closing_expected: number;
-  closing_declared: number;
-  closing_difference: number;
+  closing_expected: string;
+  closing_declared: string;
+  closing_difference: string;
   difference_status: string | null;
   payment_count: number;
   pending_outgoing_count: number;
@@ -42,7 +42,7 @@ export interface CounterData {
 // Request to open a new session
 export interface OpenSessionRequest {
   counter_x_care_id: string;
-  opening_balance?: number;
+  opening_balance?: string;
 }
 
 // Request to close a session

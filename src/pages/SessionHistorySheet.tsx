@@ -2,10 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { History } from "lucide-react";
 import { useState } from "react";
 
+import { isPositive, isZero } from "@/lib/decimal";
 import { query } from "@/lib/request";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { MonetaryDisplay } from "@/components/ui/monetary-display";
 import {
   Sheet,
   SheetContent,
@@ -56,18 +58,9 @@ export default function SessionHistorySheet({
     });
   };
 
-  const formatCurrency = (amount: number | null) => {
-    if (amount === null) return "-";
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 2,
-    }).format(amount);
-  };
-
-  const getDifferenceColor = (difference: number | null) => {
-    if (difference === null || difference === 0) return "text-gray-900";
-    return difference > 0 ? "text-green-600" : "text-red-600";
+  const getDifferenceColor = (difference: string | null) => {
+    if (difference == null || isZero(difference)) return "text-gray-900";
+    return isPositive(difference) ? "text-green-600" : "text-red-600";
   };
 
   return (
@@ -122,13 +115,13 @@ export default function SessionHistorySheet({
                   <div className="rounded bg-gray-50 p-2">
                     <p className="text-gray-500">{t("opening_balance")}</p>
                     <p className="font-medium">
-                      {formatCurrency(session.opening_balance)}
+                      <MonetaryDisplay amount={session.opening_balance} />
                     </p>
                   </div>
                   <div className="rounded bg-gray-50 p-2">
                     <p className="text-gray-500">{t("expected_amount")}</p>
                     <p className="font-medium">
-                      {formatCurrency(session.expected_amount)}
+                      <MonetaryDisplay amount={session.expected_amount} />
                     </p>
                   </div>
                   {session.status === "closed" && (
@@ -136,7 +129,7 @@ export default function SessionHistorySheet({
                       <div className="rounded bg-gray-50 p-2">
                         <p className="text-gray-500">{t("declared_amount")}</p>
                         <p className="font-medium">
-                          {formatCurrency(session.closing_declared)}
+                          <MonetaryDisplay amount={session.closing_declared} />
                         </p>
                       </div>
                       <div className="rounded bg-gray-50 p-2">
@@ -144,8 +137,10 @@ export default function SessionHistorySheet({
                         <p
                           className={`font-medium ${getDifferenceColor(session.closing_difference)}`}
                         >
-                          {session.closing_difference > 0 ? "+" : ""}
-                          {formatCurrency(session.closing_difference)}
+                          {isPositive(session.closing_difference) ? "+" : ""}
+                          <MonetaryDisplay
+                            amount={session.closing_difference}
+                          />
                         </p>
                       </div>
                     </>

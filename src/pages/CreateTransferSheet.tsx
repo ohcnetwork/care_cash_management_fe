@@ -6,6 +6,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import {
+  add,
+  isGreaterThan,
+  isPositive,
+  multiply,
+  round,
+  zodDecimal,
+} from "@/lib/decimal";
 import { mutate } from "@/lib/request";
 import { query } from "@/lib/request";
 
@@ -20,6 +28,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { MonetaryDisplay } from "@/components/ui/monetary-display";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Sheet,
@@ -42,7 +51,7 @@ import DenominationInput from "./DenominationInput";
 
 const formSchema = z.object({
   to_session_id: z.number().positive("Please select a destination"),
-  amount: z.coerce.number().positive("Amount must be greater than 0"),
+  amount: zodDecimal({ min: 0 }),
   use_denominations: z.boolean(),
 });
 
@@ -81,7 +90,7 @@ export default function CreateTransferSheet({
     resolver: zodResolver(formSchema),
     defaultValues: {
       to_session_id: 0,
-      amount: 0,
+      amount: "0",
       use_denominations: false,
     },
   });
@@ -128,7 +137,7 @@ export default function CreateTransferSheet({
     createTransfer({
       from_counter_x_care_id: session.counter_x_care_id,
       to_session_id: String(values.to_session_id),
-      amount: values.amount,
+      amount: round(values.amount),
       denominations:
         values.use_denominations || isMainCashTransfer
           ? denominations
@@ -153,20 +162,13 @@ export default function CreateTransferSheet({
   ) => {
     setDenominations(newDenominations);
     if (useDenominations || isMainCashTransfer) {
-      const total = Object.entries(newDenominations).reduce(
-        (sum, [denom, count]) => sum + parseInt(denom) * count,
-        0,
+      const total = add(
+        ...Object.entries(newDenominations).map(([denom, count]) =>
+          multiply(denom, count),
+        ),
       );
-      form.setValue("amount", total, { shouldValidate: true });
+      form.setValue("amount", round(total), { shouldValidate: true });
     }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 2,
-    }).format(amount);
   };
 
   return (
@@ -188,7 +190,7 @@ export default function CreateTransferSheet({
                 {t("your_current_balance")}
               </p>
               <p className="text-2xl font-bold text-gray-900">
-                {formatCurrency(session.expected_amount)}
+                <MonetaryDisplay amount={session.expected_amount} />
               </p>
             </div>
 
@@ -204,7 +206,7 @@ export default function CreateTransferSheet({
                   <FormControl>
                     {availableDestinations.length > 0 ? (
                       <RadioGroup
-                        onValueChange={(value) => field.onChange(Number(value))}
+                        onValueChange={(value) => field.onChange(value)}
                         value={String(field.value)}
                       >
                         {availableDestinations.map((counter: CounterData) =>
@@ -307,7 +309,7 @@ export default function CreateTransferSheet({
                               max={session.expected_amount}
                               {...field}
                               onChange={(e) =>
-                                field.onChange(parseFloat(e.target.value) || 0)
+                                field.onChange(e.target.value || "0")
                               }
                               className="pl-8"
                             />
@@ -320,7 +322,7 @@ export default function CreateTransferSheet({
                 )}
 
                 {/* Validation warning */}
-                {amount > session.expected_amount && (
+                {isGreaterThan(amount, session.expected_amount) && (
                   <p className="text-sm text-red-500">
                     {t("transfer_exceeds_balance")}
                   </p>
@@ -339,8 +341,8 @@ export default function CreateTransferSheet({
                     disabled={
                       isPending ||
                       !form.formState.isValid ||
-                      amount > session.expected_amount ||
-                      amount <= 0
+                      isGreaterThan(amount, session.expected_amount) ||
+                      !isPositive(amount)
                     }
                   >
                     {isPending ? (

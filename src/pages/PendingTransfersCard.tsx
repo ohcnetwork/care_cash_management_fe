@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { MonetaryDisplay } from "@/components/ui/monetary-display";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useTranslation } from "@/hooks/useTranslation";
@@ -204,14 +205,6 @@ export default function PendingTransfersCard({
     });
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 2,
-    }).format(amount);
-  };
-
   const getStatusBadge = (status: TransferStatus) => {
     switch (status) {
       case "pending":
@@ -295,7 +288,7 @@ export default function PendingTransfersCard({
                       </span>
                     </div>
                     <p className="text-2xl font-bold text-gray-900">
-                      {formatCurrency(transfer.amount)}
+                      <MonetaryDisplay amount={transfer.amount} />
                     </p>
                     <p className="text-xs text-gray-500">
                       {formatDateTime(transfer.created_at)}
@@ -417,7 +410,7 @@ export default function PendingTransfersCard({
                         </div>
                         <div className="flex items-center gap-3">
                           <p className="text-2xl font-bold text-gray-900">
-                            {formatCurrency(transfer.amount)}
+                            <MonetaryDisplay amount={transfer.amount} />
                           </p>
                           {getStatusBadge(transfer.status)}
                         </div>
@@ -509,7 +502,7 @@ export default function PendingTransfersCard({
                         </div>
                         <div className="flex items-center gap-3">
                           <p className="text-2xl font-bold text-gray-900">
-                            {formatCurrency(transfer.amount)}
+                            <MonetaryDisplay amount={transfer.amount} />
                           </p>
                           {getStatusBadge(transfer.status)}
                         </div>
@@ -558,7 +551,9 @@ export default function PendingTransfersCard({
             <div className="rounded-lg bg-gray-50 p-3">
               <p className="text-sm text-gray-500">{t("transfer_amount")}</p>
               <p className="text-xl font-bold">
-                {selectedTransfer && formatCurrency(selectedTransfer.amount)}
+                {selectedTransfer && (
+                  <MonetaryDisplay amount={selectedTransfer.amount} />
+                )}
               </p>
               <p className="text-sm text-gray-500">
                 {t("from")} {selectedTransfer?.from_user_name}

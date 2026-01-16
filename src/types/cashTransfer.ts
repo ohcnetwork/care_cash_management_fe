@@ -5,7 +5,7 @@ export type TransferStatus = "pending" | "accepted" | "rejected" | "cancelled";
 export interface TransferData {
   id: number;
   status: TransferStatus;
-  amount: number;
+  amount: string;
   from_user_id: string | null;
   from_user_name: string | null;
   from_counter_id: string | null;
@@ -25,7 +25,7 @@ export interface TransferData {
 export interface CreateTransferRequest {
   from_counter_x_care_id: string;
   to_session_id: string;
-  amount: number;
+  amount: string;
   denominations?: Record<string, number>;
 }
 

@@ -31,7 +31,6 @@ export default function CashManagementPage({
       pathParams: { facilityId: facilityId },
     }),
   });
-  console.log("userid", user?.id);
 
   // Find counter where current user has an active session
   const userCounter = countersResponse?.counters?.find((counter) =>

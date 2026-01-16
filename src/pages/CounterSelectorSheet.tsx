@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { round, zodDecimal } from "@/lib/decimal";
 import { mutate } from "@/lib/request";
 
 import { Badge } from "@/components/ui/badge";
@@ -34,9 +35,7 @@ import cashSessionApi from "@/types/cashSessionApi";
 
 const formSchema = z.object({
   counter_x_care_id: z.string().min(1, "Please select a counter"),
-  opening_balance: z.coerce
-    .number()
-    .min(0, "Opening balance must be 0 or more"),
+  opening_balance: zodDecimal({ min: 0 }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -63,7 +62,7 @@ export default function CounterSelectorSheet({
     resolver: zodResolver(formSchema),
     defaultValues: {
       counter_x_care_id: "",
-      opening_balance: 0,
+      opening_balance: "0",
     },
   });
 
@@ -88,7 +87,7 @@ export default function CounterSelectorSheet({
   const onSubmit = (values: FormValues) => {
     openSession({
       counter_x_care_id: values.counter_x_care_id,
-      opening_balance: values.opening_balance,
+      opening_balance: round(values.opening_balance),
     });
   };
 
@@ -168,7 +167,6 @@ export default function CounterSelectorSheet({
                       <Input
                         type="number"
                         min="0"
-                        step="0.01"
                         {...field}
                         className="pl-8"
                         placeholder="0.00"
