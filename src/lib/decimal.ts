@@ -1,7 +1,7 @@
 import Decimal from "decimal.js";
 import z from "zod";
 
-import { careConfig } from "@/index";
+import { careConfig } from "@/lib/careConfig";
 
 /**
  * Accounting display precision (matches backend ACCOUNTING_PRECISION)
