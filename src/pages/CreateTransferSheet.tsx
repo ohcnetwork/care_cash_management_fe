@@ -172,7 +172,16 @@ export default function CreateTransferSheet({
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
+    <Sheet
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          form.reset();
+          setDenominations({});
+        }
+        onOpenChange(isOpen);
+      }}
+    >
       <SheetContent className="sm:max-w-lg overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{t("transfer_cash")}</SheetTitle>
@@ -206,8 +215,12 @@ export default function CreateTransferSheet({
                   <FormControl>
                     {availableDestinations.length > 0 ? (
                       <RadioGroup
-                        onValueChange={(value) => field.onChange(value)}
-                        value={String(field.value)}
+                        onValueChange={(value) =>
+                          field.onChange(parseInt(value, 10))
+                        }
+                        value={
+                          field.value != null ? String(field.value) : undefined
+                        }
                       >
                         {availableDestinations.map((counter: CounterData) =>
                           counter.open_sessions.map((openSession) => (
