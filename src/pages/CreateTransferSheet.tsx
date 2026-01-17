@@ -215,8 +215,12 @@ export default function CreateTransferSheet({
                   <FormControl>
                     {availableDestinations.length > 0 ? (
                       <RadioGroup
-                        onValueChange={(value) => field.onChange(Number(value))}
-                        value={field.value ? String(field.value) : undefined}
+                        onValueChange={(value) =>
+                          field.onChange(parseInt(value, 10))
+                        }
+                        value={
+                          field.value != null ? String(field.value) : undefined
+                        }
                       >
                         {availableDestinations.map((counter: CounterData) =>
                           counter.open_sessions.map((openSession) => (
