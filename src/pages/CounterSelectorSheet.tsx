@@ -93,7 +93,7 @@ export default function CounterSelectorSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="sm:max-w-md">
+      <SheetContent className="sm:max-w-md overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{t("start_session")}</SheetTitle>
         </SheetHeader>
