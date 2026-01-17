@@ -1,12 +1,22 @@
 import Decimal from "decimal.js";
 import z from "zod";
 
-import { careConfig } from "@/index";
+/**
+ * Get the care config from the window object (provided by the main app)
+ */
+function getCareConfig() {
+  if (!window.__CORE_ENV__) {
+    throw new Error(
+      "window.__CORE_ENV__ is not available. Ensure the plugin is loaded within the Care Frontend application.",
+    );
+  }
+  return window.__CORE_ENV__;
+}
 
 /**
  * Accounting display precision (matches backend ACCOUNTING_PRECISION)
  */
-export const ACCOUNTING_PRECISION = careConfig.decimal.accountingPrecision;
+export const ACCOUNTING_PRECISION = getCareConfig().decimal.accountingPrecision;
 
 /**
  * Create a Decimal from a string value (API response format)
@@ -53,7 +63,9 @@ export function divide(
 }
 
 export function round(value: string | number | Decimal): string {
-  return new Decimal(value).toFixed(careConfig.decimal.accountingPrecision);
+  return new Decimal(value).toFixed(
+    getCareConfig().decimal.accountingPrecision,
+  );
 }
 
 /**
