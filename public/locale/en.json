@@ -32,7 +32,6 @@
   "failed_to_cancel_transfer": "Failed to cancel transfer",
   "failed_to_close_session": "Failed to close session",
   "failed_to_create_transfer": "Failed to create transfer",
-  "failed_to_fetch_location": "Failed to fetch location",
   "failed_to_open_session": "Failed to open session",
   "failed_to_reject_transfer": "Failed to reject transfer",
   "from": "From",

@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSetAtom } from "jotai";
 import { CheckIcon, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -31,10 +30,8 @@ import {
 
 import { useTranslation } from "@/hooks/useTranslation";
 
-import { paymentReconcilationLocationAtom } from "@/state/locationCache";
 import { CounterData } from "@/types/cashSession";
 import cashSessionApi from "@/types/cashSessionApi";
-import { locationApi } from "@/types/locationApi";
 
 const formSchema = z.object({
   counter_x_care_id: z.string().min(1, "Please select a counter"),
@@ -60,9 +57,6 @@ export default function CounterSelectorSheet({
 }: CounterSelectorSheetProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const setLocationCache = useSetAtom(
-    paymentReconcilationLocationAtom(facilityId),
-  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -70,13 +64,6 @@ export default function CounterSelectorSheet({
       counter_x_care_id: "",
       opening_balance: "0",
     },
-  });
-
-  const { mutateAsync: getLocation } = useMutation({
-    mutationFn: (locationId: string) =>
-      mutate(locationApi.get, {
-        pathParams: { facility_id: facilityId, id: locationId },
-      })({}),
   });
 
   const { mutate: openSession, isPending } = useMutation({
@@ -97,19 +84,11 @@ export default function CounterSelectorSheet({
     },
   });
 
-  const onSubmit = async (values: FormValues) => {
-    try {
-      // Fetch and cache the location before opening session
-      const location = await getLocation(values.counter_x_care_id);
-      setLocationCache(location);
-
-      openSession({
-        counter_x_care_id: values.counter_x_care_id,
-        opening_balance: round(values.opening_balance),
-      });
-    } catch {
-      toast.error(t("failed_to_fetch_location"));
-    }
+  const onSubmit = (values: FormValues) => {
+    openSession({
+      counter_x_care_id: values.counter_x_care_id,
+      opening_balance: round(values.opening_balance),
+    });
   };
 
   return (
