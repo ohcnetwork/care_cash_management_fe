@@ -62,7 +62,7 @@ export default function CounterSelectorSheet({
     resolver: zodResolver(formSchema),
     defaultValues: {
       counter_x_care_id: "",
-      opening_balance: "0",
+      opening_balance: "",
     },
   });
 
@@ -103,6 +103,30 @@ export default function CounterSelectorSheet({
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-6 py-6"
           >
+            <FormField
+              control={form.control}
+              name="opening_balance"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("opening_balance")}</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                        {t("currency_symbol")}
+                      </span>
+                      <Input
+                        type="number"
+                        min="0"
+                        {...field}
+                        className="pl-8"
+                        placeholder="0.00"
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="counter_x_care_id"
@@ -147,31 +171,6 @@ export default function CounterSelectorSheet({
                         </div>
                       )}
                     </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="opening_balance"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("opening_balance")}</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                        {t("currency_symbol")}
-                      </span>
-                      <Input
-                        type="number"
-                        min="0"
-                        {...field}
-                        className="pl-8"
-                        placeholder="0.00"
-                      />
-                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
