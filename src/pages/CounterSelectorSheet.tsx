@@ -62,7 +62,7 @@ export default function CounterSelectorSheet({
     resolver: zodResolver(formSchema),
     defaultValues: {
       counter_x_care_id: "",
-      opening_balance: "",
+      opening_balance: "0",
     },
   });
 
