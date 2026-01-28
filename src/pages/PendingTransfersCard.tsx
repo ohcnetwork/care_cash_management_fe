@@ -14,6 +14,7 @@ import { toast } from "sonner";
 
 import { mutate } from "@/lib/request";
 import { query } from "@/lib/request";
+import { formatDateTime } from "@/lib/utils";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -193,16 +194,6 @@ export default function PendingTransfersCard({
         reason: rejectReason || undefined,
       });
     }
-  };
-
-  const formatDateTime = (dateString: string | null) => {
-    if (!dateString) return "-";
-    return new Date(dateString).toLocaleString("en-IN", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
   };
 
   const getStatusBadge = (status: TransferStatus) => {

@@ -1,6 +1,8 @@
 import { ArrowRightLeft, Banknote, CircleX } from "lucide-react";
 import { useState } from "react";
 
+import { formatDateTime } from "@/lib/utils";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,17 +32,6 @@ export default function ActiveSessionCard({
   const { t } = useTranslation();
   const [isCloseSheetOpen, setIsCloseSheetOpen] = useState(false);
   const [isTransferSheetOpen, setIsTransferSheetOpen] = useState(false);
-
-  const formatDateTime = (dateString: string | null) => {
-    if (!dateString) return "-";
-    return new Date(dateString).toLocaleString("en-IN", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   return (
     <>

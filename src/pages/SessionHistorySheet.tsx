@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { isPositive, isZero } from "@/lib/decimal";
 import { query } from "@/lib/request";
+import { formatDateTime } from "@/lib/utils";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -46,17 +47,6 @@ export default function SessionHistorySheet({
   });
 
   const sessions = sessionsResponse?.sessions ?? [];
-
-  const formatDateTime = (dateString: string | null) => {
-    if (!dateString) return "-";
-    return new Date(dateString).toLocaleString("en-IN", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const getDifferenceColor = (difference: string | null) => {
     if (difference == null || isZero(difference)) return "text-gray-900";
