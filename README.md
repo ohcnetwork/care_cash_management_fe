@@ -1,6 +1,6 @@
 # care_cash_management_fe
 
-`care_cash_management_fe` is a microfrontend plugin used in OHC Care to support cash management workflows. It is loaded as a remote app into the main `care_fe` application through plugin configuration.
+`care_cash_management_fe` is a microfrontend plugin used in OHC Care to support cash management workflows.
 
 ## Getting Started
 
