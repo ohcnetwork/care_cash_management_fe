@@ -7,7 +7,7 @@
 ### Prerequisites
 
 - Node.js and npm
-- A configured and running Odoo Instance (for cash management integration)
+- Odoo Instance: Configured and running with Accounts → Cash Management module available
 
 ## Setup Instructions
 
@@ -55,4 +55,4 @@ npm run start
 5. Keep cashier field blank.
 6. In the Care ID field, add the Care ID of the counter created in `care_fe`.
 
-The counter is now linked. Once connected, bill counter operations from Odoo can be matched with the corresponding counter configured in Care.
+The counter is now linked. Open a session for the corresponding location and start cashier operations.
