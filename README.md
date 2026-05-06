@@ -7,7 +7,7 @@
 ### Prerequisites
 
 - Node.js and npm
-- A configured and running Odoo Instance (for cash management integration)
+- Odoo Instance: Configured and running with Accounts → Cash Management module available
 
 ## Setup Instructions
 
@@ -31,20 +31,10 @@ npm install
 npm run start
 ```
 
-## Connect Plugin to Main `care_fe`
+## Registering the Plugin in CARE
 
-1. Open the main Care frontend.
-2. Go to **Admin Dashboard** from the navbar.
-3. Open **Apps** and click **Add New Config**.
-4. Add the config below (for local development, the `url` should point to your local server):
-
-```json
-{
-  "url": "http://localhost:10120/assets/remoteEntry.js",
-  "name": "care_analytics_fe",
-  "plug": "care_analytics_fe"
-}
-```
+After running the plugin locally (or deploying it), register it in your CARE
+instance
 
 ## Create and Connect a Bill Counter (Care + Odoo)
 
@@ -55,4 +45,4 @@ npm run start
 5. Keep cashier field blank.
 6. In the Care ID field, add the Care ID of the counter created in `care_fe`.
 
-The counter is now linked. Once connected, bill counter operations from Odoo can be matched with the corresponding counter configured in Care.
+The counter is now linked. Open a session for the corresponding location and start cashier operations.
