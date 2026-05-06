@@ -31,20 +31,10 @@ npm install
 npm run start
 ```
 
-## Connect Plugin to Main `care_fe`
+## Registering the Plugin in CARE
 
-1. Open the main Care frontend.
-2. Go to **Admin Dashboard** from the navbar.
-3. Open **Apps** and click **Add New Config**.
-4. Add the config below (for local development, the `url` should point to your local server):
-
-```json
-{
-  "url": "http://localhost:10120/assets/remoteEntry.js",
-  "name": "care_analytics_fe",
-  "plug": "care_analytics_fe"
-}
-```
+After running the plugin locally (or deploying it), register it in your CARE
+instance
 
 ## Create and Connect a Bill Counter (Care + Odoo)
 
